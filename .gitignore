@@ -1,0 +1,36 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdata/
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+
+# XcodeGen-generated project file. Source of truth is project.yml.
+# Regenerate with `xcodegen generate`.
+*.xcodeproj/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# CocoaPods (not used, but ignore preemptively)
+Pods/
+
+# Fastlane (future)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# macOS noise
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Personal env notes (not for the public repo)
+DEV-ENV.md
+CLAUDE.md

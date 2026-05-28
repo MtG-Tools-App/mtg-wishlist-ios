@@ -1,0 +1,52 @@
+name: MtGWishlist
+options:
+  bundleIdPrefix: com.mtgtools
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: false
+  developmentLanguage: ja
+
+# Single iOS app target. iPad explicitly excluded per spec —
+# TARGETED_DEVICE_FAMILY=1 means iPhone only.
+targets:
+  MtGWishlist:
+    type: application
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: MtGWishlist/Sources
+      - path: MtGWishlist/Assets.xcassets
+      - path: MtGWishlist/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mtgtools.wishlist
+        PRODUCT_NAME: MtG Wishlist
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1"  # 1 = iPhone only, 2 = iPad, 1,2 = Universal
+        SWIFT_VERSION: "5.0"
+        ENABLE_PREVIEWS: "YES"
+        DEVELOPMENT_ASSET_PATHS: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Lock to portrait — MTG card art reads best vertically and the
+        # design language assumes a single orientation
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UILaunchScreen_Generation: "YES"
+        # Japanese-first display name
+        INFOPLIST_KEY_CFBundleDisplayName: "MtG Wishlist"
+    info:
+      path: MtGWishlist/Info.plist
+      properties:
+        # UIAppFonts registers bundled font files with iOS so they are
+        # available to UIFont/Font lookups. PostScript names (the actual
+        # identifier you pass to Font.custom) are verified at runtime
+        # by Sources/FontInventory.swift on first launch.
+        UIAppFonts:
+          - NotoSerifJP-Regular.ttf
+          - NotoSerifJP-Medium.ttf
+          - NotoSerifJP-SemiBold.ttf
+          - Oranienbaum-Regular.ttf
+          - Vidaloka-Regular.ttf
+        UILaunchScreen:
+          UIColorName: bgCanvas
