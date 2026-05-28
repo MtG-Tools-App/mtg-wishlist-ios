@@ -50,6 +50,13 @@ A/B comparisons are a one-line change.
 `AppColor.swift` for the semantic Swift accessors. Hard-coded colors
 are forbidden — always go through the token API.
 
+## Resuming work in a fresh Claude Code session
+
+Start with `docs/RESUME.md` — it's the 5-minute brief on current
+progress, environment commands, launch flags, file layout, and the
+decision log. `docs/PORT-PLAN.md` covers the underlying design and
+phase rationale; refer there once `RESUME.md` is digested.
+
 ## Verifying fonts at runtime
 
 The app dumps every registered family + PostScript name on first
