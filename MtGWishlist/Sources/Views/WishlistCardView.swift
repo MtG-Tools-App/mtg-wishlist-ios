@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// A single wishlist row rendered as a tall card in the grid: image on top
@@ -8,8 +9,16 @@ import SwiftUI
 /// Visual reference: `src/components/WishlistContent.tsx` WishlistCard
 /// function in the Web codebase. The data fields render in the same order
 /// so a user familiar with the Web build feels at home on iOS.
+///
+/// Tap behavior: pushes `EditItemView` via the parent's
+/// `navigationDestination(for: WishlistItem.self)`. Long-press surfaces a
+/// context menu with a destructive Delete action (LazyVGrid doesn't have
+/// native swipe-to-delete, so context menu is the iOS-native equivalent).
 struct WishlistCardView: View {
     let item: WishlistItem
+    @Environment(\.modelContext) private var context
+
+    @State private var showDeleteAlert = false
 
     /// Sold-out signal: the latest price log on this item is marked
     /// `available == false`. Carries opacity to gray the row out, same
@@ -20,6 +29,32 @@ struct WishlistCardView: View {
     }
 
     var body: some View {
+        NavigationLink(value: item) {
+            cardBody
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            Button(role: .destructive) {
+                showDeleteAlert = true
+            } label: {
+                Label("削除", systemImage: "trash")
+            }
+        }
+        .alert("このアイテムを削除しますか？", isPresented: $showDeleteAlert) {
+            Button("削除", role: .destructive) {
+                context.delete(item)
+                try? context.save()
+                UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            }
+            Button("キャンセル", role: .cancel) {}
+        } message: {
+            Text("\(item.card.nameJa ?? item.card.nameEn) を wishlist から取り除きます。")
+        }
+    }
+
+    // MARK: - Visual body (unchanged from Phase 2)
+
+    private var cardBody: some View {
         VStack(alignment: .leading, spacing: 0) {
             cardImage
                 .overlay(alignment: .topTrailing) {

@@ -20,9 +20,12 @@ struct WishlistView: View {
     @State private var formatFilter: FormatFilter = nil
     @State private var showStyleGuide = false
     @State private var showAddCard = false
+    /// Programmatic navigation path so `--open-edit-first` can push the first
+    /// item's edit screen on launch for screenshot/dev purposes.
+    @State private var path = NavigationPath()
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             content
                 // System title would render in San Francisco; we hide it and
                 // draw our own Vidaloka hero in the scroll content (see
@@ -31,6 +34,9 @@ struct WishlistView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .toolbarBackground(Color.bgCanvas, for: .navigationBar)
+                .navigationDestination(for: WishlistItem.self) { item in
+                    EditItemView(item: item)
+                }
         }
         .background(Color.bgCanvas.ignoresSafeArea())
         .sheet(isPresented: $showStyleGuide) {
@@ -55,6 +61,13 @@ struct WishlistView: View {
             // search sheet so we can screenshot it without programmatic taps.
             if ProcessInfo.processInfo.arguments.contains("--open-add-card") {
                 showAddCard = true
+            }
+            // Dev: `--open-edit-first` pushes the first item's edit screen on
+            // launch. Useful for capturing the EditItemView without manual
+            // taps in the simulator.
+            if ProcessInfo.processInfo.arguments.contains("--open-edit-first"),
+               let first = items.first {
+                path.append(first)
             }
         }
     }
