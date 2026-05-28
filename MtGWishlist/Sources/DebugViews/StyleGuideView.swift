@@ -1,6 +1,8 @@
 import SwiftUI
 
-/// Verification preview screen.
+/// Design-token verification preview. Originally the root `ContentView`
+/// from Phase 0; relocated to `DebugViews/` once the real WishlistView
+/// took over as the app root in Phase 2.
 ///
 /// Three sections cover the entire design-token surface:
 ///   1. Typography — Latin display × JP serif × mixed-language body
@@ -9,7 +11,10 @@ import SwiftUI
 ///
 /// Use this as the eyeball spec test. When fonts and colors look right
 /// here, the rest of the app inherits them through `AppFont` / `Color.*`.
-struct ContentView: View {
+/// Renders the typography × color × material design-token surface as a
+/// scrollable single screen. Accessible from `WishlistView`'s toolbar (debug
+/// menu); not shown to end users.
+struct StyleGuideView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
@@ -140,5 +145,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    StyleGuideView()
 }

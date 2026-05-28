@@ -19,7 +19,7 @@ struct MtGWishlistApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WishlistView()
         }
         .modelContainer(for: [
             Card.self,
