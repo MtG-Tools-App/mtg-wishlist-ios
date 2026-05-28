@@ -19,6 +19,7 @@ struct WishlistView: View {
 
     @State private var formatFilter: FormatFilter = nil
     @State private var showStyleGuide = false
+    @State private var showAddCard = false
 
     var body: some View {
         NavigationStack {
@@ -35,6 +36,11 @@ struct WishlistView: View {
         .sheet(isPresented: $showStyleGuide) {
             StyleGuideView()
         }
+        .sheet(isPresented: $showAddCard) {
+            NavigationStack {
+                AddCardView()
+            }
+        }
         // Dev-only auto-seed: pass `--seed-samples` as a launch argument
         // (`xcrun simctl launch ... com.mtgtools.wishlist --seed-samples`)
         // to populate sample data without manually tapping the button. Skips
@@ -44,6 +50,11 @@ struct WishlistView: View {
             if ProcessInfo.processInfo.arguments.contains("--seed-samples"),
                items.isEmpty {
                 SeedData.insertSamples(into: context)
+            }
+            // Dev convenience: `--open-add-card` immediately presents the
+            // search sheet so we can screenshot it without programmatic taps.
+            if ProcessInfo.processInfo.arguments.contains("--open-add-card") {
+                showAddCard = true
             }
         }
     }
@@ -163,6 +174,14 @@ struct WishlistView: View {
 
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                showAddCard = true
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundStyle(Color.textPrimary)
+            }
+        }
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
                 Button {
